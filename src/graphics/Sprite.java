@@ -157,7 +157,6 @@ public class Sprite implements Drawable {
 			this.getBoard().addSprite(this);
 		}
 	}
-	
 
 	@Override
 	public void draw(Graphics2D g) {
