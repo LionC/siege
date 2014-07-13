@@ -90,35 +90,71 @@ public class Board extends JPanel {
 	//Private class to handle KeyBoard inputs
 	private class InputManager extends KeyAdapter {
 		private static final int MAX_KEY_INDEX = 228;
-		
-		private boolean lastKeys[] = new boolean[MAX_KEY_INDEX];
-		private boolean keys[] = new boolean[MAX_KEY_INDEX];
-		
+
+        //The parts of the array where the differnet information (key is down, key was pressed, key was released)
+        private static final int DOWN_INDEX = 0;
+        private static final int PRESSED_INDEX = MAX_KEY_INDEX;
+        private static final int RELEASED_INDEX = MAX_KEY_INDEX*2;
+
+        private int lastKeys = 0;
+        private int actKeys = 1;
+
+        private boolean keys[][] = new boolean[2][MAX_KEY_INDEX*3];
+
 		public InputManager() {
-			for(int i = 0; i < MAX_KEY_INDEX; i++) {
-				lastKeys[i] = false;
-				keys[i] = false;
-			}
+			//Initialize everything with false
+            for(int i = 0; i < 2; i++) {
+                for(int j = 0; j < keys[i].length; j++) {
+                    keys[i][j] = false;
+                }
+            }
 		}
-		
+
 		public void keyPressed(KeyEvent e) {
-			this.keys[e.getKeyCode()] = true;
+            this.keys[lastKeys][DOWN_INDEX + e.getKeyCode()] = true;
+            this.keys[lastKeys][PRESSED_INDEX + e.getKeyCode()] = true;
 		}
 		
 		public void keyReleased(KeyEvent e) {
-			this.keys[e.getKeyCode()] = false;
+			this.keys[lastKeys][DOWN_INDEX + e.getKeyCode()] = false;
+            this.keys[lastKeys][RELEASED_INDEX + e.getKeyCode()] = true;
 		}
-		
+
+        public boolean keyDown(int keyIndex) {
+            return keys[actKeys][DOWN_INDEX + keyIndex];
+        }
+
+        public boolean keyUp(int keyIndex) {
+            return !keyDown(keyIndex);
+        }
+
+        public boolean keyPressed(int keyIndex) {
+            return keys[actKeys][PRESSED_INDEX + keyIndex];
+        }
+
+        public boolean keyReleased(int keyIndex) {
+            return keys[actKeys][RELEASED_INDEX + keyIndex];
+        }
+
 		public void update() {
-			for(int i = 0; i < MAX_KEY_INDEX; i++) {
-				lastKeys[i] = keys[i];
-			}
+            //"Copy" lastkeys to actKeys
+            int temp = actKeys;
+            actKeys = lastKeys;
+            lastKeys = temp;
+
+            //Reset released and pressed arrays
+            for(int i = 0; i < MAX_KEY_INDEX; i++) {
+                keys[lastKeys][PRESSED_INDEX + i] = false;
+                keys[lastKeys][RELEASED_INDEX + i] = false;
+            }
 		}
 	}
 	
 	//Private class to handle Mouse inputs
 	private class MouseManager extends MouseAdapter {
-		private boolean lastKeys[] = new boolean[3];
+		//TODO: Press udn Release implementieren
+
+        private boolean lastKeys[] = new boolean[3];
 		private boolean keys[] = new boolean[3];
 		
 		public MouseManager() {
@@ -181,7 +217,7 @@ public class Board extends JPanel {
 	 * @return True if key is down, false if not
 	 */
 	public boolean keyDown(int keyId) {
-		return this.inputManager.keys[keyId];
+		return this.inputManager.keyDown(keyId);
 	}
 	
 	/**
@@ -190,7 +226,7 @@ public class Board extends JPanel {
 	 * @return True if key has just been pressed, false if not
 	 */
 	public boolean keyPressed(int keyId) {
-		return this.inputManager.keys[keyId] && !this.inputManager.lastKeys[keyId];
+		return this.inputManager.keyPressed(keyId);
 	}
 	
 	/**
