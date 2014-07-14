@@ -35,7 +35,8 @@ public class Board extends JPanel {
 		this.addKeyListener(this.inputManager);
 		this.addMouseListener(this.mouseManager);
 	}
-	
+
+    @Override
 	public void paint(Graphics g) {
 		super.paint(g);
 		
@@ -110,11 +111,13 @@ public class Board extends JPanel {
             }
 		}
 
+        @Override
 		public void keyPressed(KeyEvent e) {
             this.keys[lastKeys][DOWN_INDEX + e.getKeyCode()] = true;
             this.keys[lastKeys][PRESSED_INDEX + e.getKeyCode()] = true;
 		}
-		
+
+        @Override
 		public void keyReleased(KeyEvent e) {
 			this.keys[lastKeys][DOWN_INDEX + e.getKeyCode()] = false;
             this.keys[lastKeys][RELEASED_INDEX + e.getKeyCode()] = true;
@@ -173,11 +176,13 @@ public class Board extends JPanel {
             }
         }
 
+        @Override
         public void mousePressed(MouseEvent e) {
             this.keys[lastKeys][DOWN_INDEX + e.getButton()] = true;
             this.keys[lastKeys][PRESSED_INDEX + e.getButton()] = true;
         }
 
+        @Override
         public void mouseReleased(MouseEvent e) {
             this.keys[lastKeys][DOWN_INDEX + e.getButton()] = false;
             this.keys[lastKeys][RELEASED_INDEX + e.getButton()] = true;
