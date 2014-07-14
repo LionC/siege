@@ -152,31 +152,65 @@ public class Board extends JPanel {
 	
 	//Private class to handle Mouse inputs
 	private class MouseManager extends MouseAdapter {
-		//TODO: Press udn Release implementieren
+        private static final int MAX_KEY_INDEX = 4;
 
-        private boolean lastKeys[] = new boolean[3];
-		private boolean keys[] = new boolean[3];
-		
-		public MouseManager() {
-			for(int i = 0; i < 3; i++) {
-				lastKeys[i] = false;
-				keys[i] = false;
-			}
-		}
-		
-		public void mousePressed(MouseEvent e) {
-			this.keys[e.getButton()-1] = true;
-		}
-		
-		public void mouseReleased(MouseEvent e) {
-			this.keys[e.getButton()-1] = false;
-		}
-		
-		public void update() {
-			for(int i = 0; i < 3; i++) {
-				lastKeys[i] = keys[i];
-			}
-		}
+        //The parts of the array where the differnet information (key is down, key was pressed, key was released)
+        private static final int DOWN_INDEX = 0;
+        private static final int PRESSED_INDEX = MAX_KEY_INDEX;
+        private static final int RELEASED_INDEX = MAX_KEY_INDEX*2;
+
+        private int lastKeys = 0;
+        private int actKeys = 1;
+
+        private boolean keys[][] = new boolean[2][MAX_KEY_INDEX*3];
+
+        public MouseManager() {
+            //Initialize everything with false
+            for(int i = 0; i < 2; i++) {
+                for(int j = 0; j < keys[i].length; j++) {
+                    keys[i][j] = false;
+                }
+            }
+        }
+
+        public void mousePressed(MouseEvent e) {
+            this.keys[lastKeys][DOWN_INDEX + e.getButton()] = true;
+            this.keys[lastKeys][PRESSED_INDEX + e.getButton()] = true;
+        }
+
+        public void mouseReleased(MouseEvent e) {
+            this.keys[lastKeys][DOWN_INDEX + e.getButton()] = false;
+            this.keys[lastKeys][RELEASED_INDEX + e.getButton()] = true;
+        }
+
+        public boolean mouseKeyDown(int keyIndex) {
+            return keys[actKeys][DOWN_INDEX + keyIndex];
+        }
+
+        public boolean mouseKeyUp(int keyIndex) {
+            return !mouseKeyDown(keyIndex);
+        }
+
+        public boolean mouseKeyPressed(int keyIndex) {
+            return keys[actKeys][PRESSED_INDEX + keyIndex];
+        }
+
+        public boolean mouseKeyReleased(int keyIndex) {
+            return keys[actKeys][RELEASED_INDEX + keyIndex];
+        }
+
+        public void update() {
+            //"Copy" lastkeys to actKeys
+            int temp = actKeys;
+            actKeys = lastKeys;
+            lastKeys = temp;
+
+            //Reset released and pressed arrays
+            for(int i = 0; i < MAX_KEY_INDEX; i++) {
+                keys[lastKeys][PRESSED_INDEX + i] = false;
+                keys[lastKeys][RELEASED_INDEX + i] = false;
+            }
+        }
 	}
 	
 	/**
@@ -219,35 +253,66 @@ public class Board extends JPanel {
 	public boolean keyDown(int keyId) {
 		return this.inputManager.keyDown(keyId);
 	}
-	
+
+    /**
+     * Returns whether a given key is up or not
+     * @param keyId The Id of the key, for a reference of the Ids look for the class KeyEvent
+     * @return True if key is up, false if not
+     */
+    public boolean keyUp(int keyId) { return this.inputManager.keyDown(keyId); }
+
 	/**
-	 * Returns whether a given key has just pressed or not
+	 * Returns whether a given key has just been pressed or not
 	 * @param keyId The Id of the key, for a reference of the Ids look for the class KeyEvent
 	 * @return True if key has just been pressed, false if not
 	 */
 	public boolean keyPressed(int keyId) {
 		return this.inputManager.keyPressed(keyId);
 	}
-	
-	/**
-	 * Returns whether a given mouse-key was just pressed or not
+
+    /**
+     * Returns whether a given key has just been released or not
+     * @param keyId The Id of the key, for a reference of the Ids look for the class KeyEvent
+     * @return True if key has just been released, false if not
+     */
+    public boolean keyReleased(int keyId) {
+        return this.inputManager.keyReleased(keyId);
+    }
+
+
+    /**
+	 * Returns whether a given mouse-key is down or not
 	 * @param keyId The Id of the mouse-key that should be checked, 1 and 2 are normally LMB AND RMB
 	 * @return True if the mouse-key is down, false if not
 	 */
 	public boolean mouseKeyDown(int keyId) {
-		return this.mouseManager.keys[keyId-1];
+		return this.mouseManager.mouseKeyDown(keyId);
 	}
+
+    /**
+     * Returns whether a given mouse-key is up or not
+     * @param keyId The Id of the mouse-key that should be checked, 1 and 2 are normally LMB AND RMB
+     * @return True if the mouse-key is up, false if not
+     */
+    public boolean mouseKeyUp(int keyId) {
+        return this.mouseManager.mouseKeyUp(keyId);
+    }
 	
 	/**
 	 * Returns whether a given mouse-key has just been pressed or not
 	 * @param keyId The Id of the mouse-key that should be checked, 1 and 2 are normally LMB AND RMB
 	 * @return True if the mouse-key has just been pressed, false if not
 	 */
-	public boolean mouseKeyPressed(int keyId) {
-		return this.mouseManager.keys[keyId-1] && !this.mouseManager.lastKeys[keyId -1];
-	}
-	
-	/**
+	public boolean mouseKeyPressed(int keyId) { return this.mouseManager.mouseKeyPressed(keyId); }
+
+    /**
+     * Returns whether a given mouse-key has just been released or not
+     * @param keyId The Id of the mouse-key that should be checked, 1 and 2 are normally LMB AND RMB
+     * @return True if the mouse-key has just been released, false if not
+     */
+    public boolean mouseKeyReleased(int keyId) { return this.mouseManager.mouseKeyReleased(keyId); }
+
+    /**
 	 * Gets the x-coordinate of the mouse (relative to the window)
 	 * @return The x-coordinate of the mouse pointer
 	 */
