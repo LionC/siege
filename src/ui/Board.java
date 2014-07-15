@@ -118,6 +118,8 @@ public class Board extends JPanel {
             }
 		}
 
+        //TODO: Bug finden! manchmal wird keyreleas enicht ausgelöst so scheint es
+
         @Override
 		public void keyPressed(KeyEvent e) {
             //Check if the key is down to prevent repeat presses from the OS
@@ -130,7 +132,7 @@ public class Board extends JPanel {
 
         @Override
 		public void keyReleased(KeyEvent e) {
-			this.keys[lastKeys][DOWN_INDEX + e.getKeyCode()] = false;
+            this.keys[lastKeys][DOWN_INDEX + e.getKeyCode()] = false;
             this.keys[lastKeys][RELEASED_INDEX + e.getKeyCode()] = true;
 		}
 

@@ -11,10 +11,10 @@ import graphics.Drawable;
  * @author LionC
  */
 public class Box implements Drawable {
-	private int x, y, height, width;
-	private int border = 1;
-	private boolean filled = false;
-	private Color color = Color.WHITE;
+	protected int x, y, height, width;
+	protected int border = 1;
+	protected boolean filled = false;
+	protected Color color = Color.WHITE;
 	
 	/**
 	 * Constructs a new Box, which is by default not filled with a 1-pixel-border
@@ -54,6 +54,10 @@ public class Box implements Drawable {
 	public int getY() {
 		return this.y;
 	}
+
+    public int getHeight() { return  this.height; }
+
+    public int getWidth() { return  this.width; }
 	
 	public Color getColor() {
 		return this.color;
