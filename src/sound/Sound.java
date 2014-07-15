@@ -73,8 +73,41 @@ public class Sound {
 			theSound.play();
 		}
 	}
-	
-	private AudioInputStream stream;
+
+    protected static Clip loadClip(String file) {
+        Clip clip = null;
+        AudioInputStream stream = null;
+
+        try {
+            clip = AudioSystem.getClip();
+        } catch (LineUnavailableException e1) {
+            e1.printStackTrace();
+        }
+
+        try {
+            stream = AudioSystem.getAudioInputStream(new File(file));
+        } catch (UnsupportedAudioFileException e) {
+            System.err.println("Tried to load an audio file with an unsupported format: " + file);
+            e.printStackTrace();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+
+        try {
+            clip.open(stream);
+        } catch (LineUnavailableException | IOException e) {
+            e.printStackTrace();
+        }
+
+        try {
+            stream.close();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+
+        return clip;
+    }
+
 	private String filePath;
 	protected List<Clip> clips = new LinkedList<>();
 	
@@ -83,66 +116,31 @@ public class Sound {
 	 * @param file The path to the file containing the audio data
 	 */
 	public Sound(String file) {
-		Clip clip = null;
-		
-		try {
-			clip = AudioSystem.getClip();
-		} catch (LineUnavailableException e1) {
-			e1.printStackTrace();
-		}
-		
-		try {
-			this.stream = AudioSystem.getAudioInputStream(new File(file));
-		} catch (UnsupportedAudioFileException e) {
-			System.err.println("Tried to load an audio file with an unsupported format: " + file);
-			e.printStackTrace();
-		} catch (IOException e) {
-			e.printStackTrace();
-		}
-	
-		try {
-			clip.open(this.stream);
-		} catch (LineUnavailableException | IOException e) {
-			e.printStackTrace();
-		}
-		
 		this.filePath = file;
-		this.clips.add(clip);
-	}
+        this.clips.add(loadClip(file));
+    }
 	
 	/**
 	 * Plays this Sound
 	 */
 	public void play() {
-		this.getFreeClip().start();
+        this.getFreeClip().start();
 	}
 	
 	protected Clip getFreeClip() {
 		//Check if there is a clip that is not playing...
 		for(Clip act : this.clips) {
 			if(!act.isRunning()) {
-				return act;
+				act.setFramePosition(0);
+                return act;
 			}
 		}
 		
 		//...if not create a new Clip, add it and return it
-		
-		Clip newClip = null;
-		
-		try {
-			newClip = AudioSystem.getClip();
-		} catch (LineUnavailableException e1) {
-			e1.printStackTrace();
-		}
-		
-		try {
-			newClip.open(stream);
-		} catch (LineUnavailableException | IOException e) {
-			e.printStackTrace();
-		}
-			
-		this.clips.add(newClip);
-		return newClip;
+
+        Clip clip = loadClip(this.filePath);
+        this.clips.add(clip);
+		return clip;
 	}
 	
 }

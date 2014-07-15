@@ -51,7 +51,14 @@ public class Board extends JPanel {
 		Toolkit.getDefaultToolkit().sync();
 		g.dispose();
 	}
-	
+
+    public void update() {
+        this.repaint();
+
+        this.inputManager.update();
+        this.mouseManager.update();
+    }
+
 	/**
 	 * Waits for a given amount of milliseconds.
 	 * @param millis The amount of milliseconds to be waited
@@ -113,6 +120,10 @@ public class Board extends JPanel {
 
         @Override
 		public void keyPressed(KeyEvent e) {
+            //Check if the key is down to prevent repeat presses from the OS
+            if(this.keys[lastKeys][DOWN_INDEX + e.getKeyCode()])
+                return;
+
             this.keys[lastKeys][DOWN_INDEX + e.getKeyCode()] = true;
             this.keys[lastKeys][PRESSED_INDEX + e.getKeyCode()] = true;
 		}
@@ -155,7 +166,7 @@ public class Board extends JPanel {
 	
 	//Private class to handle Mouse inputs
 	private class MouseManager extends MouseAdapter {
-        private static final int MAX_KEY_INDEX = 4;
+        private static final int MAX_KEY_INDEX = 3;
 
         //The parts of the array where the differnet information (key is down, key was pressed, key was released)
         private static final int DOWN_INDEX = 0;
@@ -178,18 +189,18 @@ public class Board extends JPanel {
 
         @Override
         public void mousePressed(MouseEvent e) {
-            this.keys[lastKeys][DOWN_INDEX + e.getButton()] = true;
-            this.keys[lastKeys][PRESSED_INDEX + e.getButton()] = true;
+            this.keys[lastKeys][DOWN_INDEX + e.getButton() - 1] = true;
+            this.keys[lastKeys][PRESSED_INDEX + e.getButton()  - 1] = true;
         }
 
         @Override
         public void mouseReleased(MouseEvent e) {
-            this.keys[lastKeys][DOWN_INDEX + e.getButton()] = false;
-            this.keys[lastKeys][RELEASED_INDEX + e.getButton()] = true;
+            this.keys[lastKeys][DOWN_INDEX + e.getButton() - 1] = false;
+            this.keys[lastKeys][RELEASED_INDEX + e.getButton() - 1] = true;
         }
 
         public boolean mouseKeyDown(int keyIndex) {
-            return keys[actKeys][DOWN_INDEX + keyIndex];
+            return keys[actKeys][DOWN_INDEX + keyIndex - 1];
         }
 
         public boolean mouseKeyUp(int keyIndex) {
@@ -197,11 +208,11 @@ public class Board extends JPanel {
         }
 
         public boolean mouseKeyPressed(int keyIndex) {
-            return keys[actKeys][PRESSED_INDEX + keyIndex];
+            return keys[actKeys][PRESSED_INDEX + keyIndex - 1];
         }
 
         public boolean mouseKeyReleased(int keyIndex) {
-            return keys[actKeys][RELEASED_INDEX + keyIndex];
+            return keys[actKeys][RELEASED_INDEX + keyIndex - 1];
         }
 
         public void update() {
