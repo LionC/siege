@@ -1,12 +1,9 @@
 package model;
 
-/**
- * Created by LionC on 18.07.2014.
- */
 public interface Collidable {
     /**
      * Get the Hitbox of this Collidable
-     * @return
+     * @return Hitbox
      */
     public Hitbox getHitbox();
 
@@ -15,5 +12,5 @@ public interface Collidable {
      * @param partner Object this Collidable collided with
      * @param partnerCategory Category the collision-partner was registered under at the HitboxManager
      */
-    public void onCollide(Collidable partner, String partnerCategory);
+    public void onCollision(Collidable partner, String partnerCategory);
 }
