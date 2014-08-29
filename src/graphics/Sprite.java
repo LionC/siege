@@ -27,7 +27,6 @@ public class Sprite implements Drawable {
 		defaultVisibility = visibility;
 	}
 	
-	protected Board board = null;
 	protected Image image;
 	private boolean visibility;
 	private int x;
@@ -85,7 +84,6 @@ public class Sprite implements Drawable {
 		this.y = y;
 		
 		myBoard.addSprite(this);
-		this.board = myBoard;
 	}
 
 	/**
@@ -120,13 +118,6 @@ public class Sprite implements Drawable {
 		return image;
 	}
 	
-	public Board getBoard() {
-		if(this.board != null)
-			return this.board;
-		else
-			return Sprite.defaultBoard;
-	}
-	
 	/**
 	 * Sets the Visibility of this Sprite
 	 * @param visibility True for visible, False for hidden
@@ -142,24 +133,19 @@ public class Sprite implements Drawable {
 	 * Hides this Sprite
 	 */
 	public void hide() {
-		if(this.visibility) {
-			this.visibility = false;
-			this.getBoard().removeSprite(this);
-		}
+		this.visibility = false;
 	}
 	
 	/**
 	 * Shows this Sprite
 	 */
 	public void show() {
-		if(!this.visibility) {
-			this.visibility = true;
-			this.getBoard().addSprite(this);
-		}
+		this.visibility = true;
 	}
 
 	@Override
 	public void draw(Graphics2D g) {
-		g.drawImage(this.image, this.x, this.y, null);
+		if(this.visibility)
+            g.drawImage(this.image, this.x, this.y, null);
 	}
 }
