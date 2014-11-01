@@ -1,6 +1,6 @@
 package graphics;
 
-import java.awt.Image;
+import java.awt.*;
 
 import ui.Board;
 
@@ -18,8 +18,15 @@ public class AnimatedSprite extends Sprite {
 	private int frameLoopEnd = -1;
 	private Image[] frames;
 	private static GifDecoder gifDecoder = new GifDecoder();
-	
-	private void initializeData(String file) {
+
+    @Override
+    public void draw(Graphics2D g) {
+        super.draw(g);
+
+        this.advanceFrame();
+    }
+
+    private void initializeData(String file) {
 		if(AnimatedSprite.gifDecoder.read(file) == 2)
 			System.err.println("Could not load file: " + file);
 		frames = new Image[AnimatedSprite.gifDecoder.getFrameCount()];
@@ -37,7 +44,7 @@ public class AnimatedSprite extends Sprite {
 	 * @throws Exception
 	 */
 	public AnimatedSprite(String file, int x, int y) throws Exception {
-		//TODO: AnimatedSprite FIles werden zweimal geladen (der Sprite Konstruktor lädt auch)
+		//TODO: AnimatedSprite FIles werden zweimal geladen (der Sprite Konstruktor lï¿½dt auch)
 		super(file, x, y);
 		initializeData(file);
 		this.setFrame(0);

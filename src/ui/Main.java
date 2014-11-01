@@ -8,7 +8,7 @@ import graphics.AnimatedSprite;
 import graphics.Sprite;
 
 import javax.sound.sampled.*;
-import javax.swing.JFrame;
+import javax.swing.*;
 
 import sound.Sound;
 import ui.elements.Box;
@@ -29,7 +29,7 @@ public class Main extends JFrame {
 		this.board = new Board();
 		this.add(board);
 		
-		this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+		this.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
 		this.setSize(WINDOW_WIDTH, WINDOW_HEIGHT);
 		this.setLocationRelativeTo(null);
 		this.setTitle("FrankerZ");
@@ -66,8 +66,8 @@ public class Main extends JFrame {
 		
 		Label text;
 		
-		application.board.addDrawable(text = new Label("FPS: OVER 9000"));
-		application.board.addDrawable(new Box(150,150,200,200));
+		application.board.add(text = new Label("FPS: OVER 9000"));
+		application.board.add(new Box(150,150,200,200));
 
 		int speed = 2;
 		long lastRender = 0;

@@ -15,11 +15,14 @@ import javax.swing.JPanel;
 
 import graphics.Drawable;
 import graphics.Sprite;
+import model.Drawer;
 
 @SuppressWarnings("serial")
 public class Board extends JPanel {
 	InputManager inputManager;
 	MouseManager mouseManager;
+
+    Drawer drawer = new Drawer();
 	
 	//The default drawing color
 	Color color = Color.WHITE;
@@ -41,12 +44,9 @@ public class Board extends JPanel {
 		super.paint(g);
 		
 		Graphics2D g2d = (Graphics2D) g;
+		g2d.setColor(color);
 		
-		g.setColor(color);
-		
-		for(Drawable act : sprites) {
-			act.draw(g2d);
-		}
+		this.drawer.render(g2d);
 		
 		Toolkit.getDefaultToolkit().sync();
 		g.dispose();
@@ -235,34 +235,18 @@ public class Board extends JPanel {
 	 * Adds a {@link Drawable} to this {@link Board}
 	 * @param drawable The {@link Drawable} to be added
 	 */
-	public void addDrawable(Drawable drawable) {
-		this.sprites.add(drawable);
+	public void add(Drawable drawable) {
+		this.drawer.add(drawable);
 	}
 	
 	/**
 	 * Removes a {@link Drawable} from this {@link Board}
 	 * @param drawable
 	 */
-	public void removeDrawable(Drawable drawable) {
-		this.sprites.remove(drawable);
+	public void remove(Drawable drawable) {
+		this.drawer.remove(drawable);
 	}
-	
-	/**
-	 * Adds a {@link Sprite} to this {@link Board}
-	 * @param sprite The {@link Sprite} to be added
-	 */
-	public void addSprite(Sprite sprite) {
-		this.sprites.add(sprite);
-	}
-	
-	/**
-	 * Removes a {@link Sprite} from this {@link Board}
-	 * @param sprite The {@link Sprite} to be removed
-	 */
-	public void removeSprite(Sprite sprite) {
-		this.sprites.remove(sprite);
-	}
-	
+
 	/**
 	 * Returns whether a given key is down or not
 	 * @param keyId The Id of the key, for a reference of the Ids look for the class KeyEvent

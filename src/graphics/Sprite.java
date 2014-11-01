@@ -59,7 +59,7 @@ public class Sprite implements Drawable {
 		this.visibility = defaultVisibility;
 		
 		if(this.visibility)
-			defaultBoard.addSprite(this);
+			defaultBoard.add(this);
 	}
 	
 	/**
@@ -83,7 +83,7 @@ public class Sprite implements Drawable {
 		this.x = x;
 		this.y = y;
 		
-		myBoard.addSprite(this);
+		myBoard.add(this);
 	}
 
 	/**
