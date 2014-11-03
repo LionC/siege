@@ -14,11 +14,12 @@ public class Game {
     protected List<Board> boards = new ArrayList<>();
     protected List<Actor> actors = new LinkedList<>();
 
-    public Game() {}
+    public Game() {
+        //TODO: Construct and add default Board
+    }
 
-    public Game(int aFps) {
-        this.fps = aFps;
-        this.frameLength = 1000 / aFps;
+    public Game(Board aBoard) {
+        this.boards.add(aBoard);
     }
 
     public void addBoard(Board aBoard) {
