@@ -14,6 +14,8 @@ public class Game {
     protected List<Board> boards = new ArrayList<>();
     protected List<Actor> actors = new LinkedList<>();
 
+    protected CollisionChecker collider = new CollisionChecker();
+
     public Game() {
         this.boards.add(new Board());
     }
@@ -35,6 +37,10 @@ public class Game {
         return this.boards;
     }
 
+    public CollisionChecker getCollisionChecket() {
+        return this.collider;
+    }
+
     public Board getBoard(int aIndex) {
         return this.boards.get(aIndex);
     }
@@ -50,6 +56,7 @@ public class Game {
     public boolean removeActor(Actor aActor) {
         return this.actors.remove(aActor);
     }
+
 
     public void setFps(int aFps) {
         this.fps = aFps;
