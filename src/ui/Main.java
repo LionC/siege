@@ -10,35 +10,28 @@ import graphics.Sprite;
 import javax.sound.sampled.*;
 import javax.swing.*;
 
+import model.Game;
 import sound.Sound;
 import ui.elements.Box;
 import ui.elements.Label;
 
 
 @SuppressWarnings({ "serial", "unused" })
-public class Main extends JFrame {
+public class Main {
 	private static int FPS = 40;
     private static int FPS_WAIT = 1000 / FPS;
 
     private static int WINDOW_WIDTH = 640;
 	private static int WINDOW_HEIGHT = 480;
 	
-	private Board board;
+    private Game game;
 	
 	public Main() {
-		this.board = new Board();
-		this.add(board);
-		
-		this.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
-		this.setSize(WINDOW_WIDTH, WINDOW_HEIGHT);
-		this.setLocationRelativeTo(null);
-		this.setTitle("FrankerZ");
-		this.setResizable(false);
-		this.setVisible(true);
+        this.game = new Game(new Board());
 	}
 	
 	public Board getBoard() {
-		return this.board;
+		return this.game.getBoard();
 	}
 	
 	public void waitBusy(long milis) {
@@ -58,7 +51,7 @@ public class Main extends JFrame {
 		Sound.loadSound("D:/Tools/eclipse/Workspace/FightingEngine/src/sound/wav/gooddaytodie.wav", "die");
 
 		try {
-			Sprite.setDefaultBoard(application.board);
+			Sprite.setDefaultBoard(application.getBoard());
 			dogFace = new Sprite("src/ui/img/frankerz.jpg",200,200);
 		} catch (Exception e) {
 			e.printStackTrace();
@@ -66,8 +59,8 @@ public class Main extends JFrame {
 		
 		Label text;
 		
-		application.board.add(text = new Label("FPS: OVER 9000"));
-		application.board.add(new Box(150,150,200,200));
+		application.getBoard().add(text = new Label("FPS: OVER 9000"));
+		application.getBoard().add(new Box(150,150,200,200));
 
 		int speed = 2;
 		long lastRender = 0;

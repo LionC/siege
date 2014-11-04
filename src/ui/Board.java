@@ -10,17 +10,19 @@ import java.awt.event.MouseEvent;
 import java.util.ArrayList;
 import java.util.List;
 
-import javax.swing.ImageIcon;
-import javax.swing.JPanel;
+import javax.swing.*;
 
 import graphics.Drawable;
 import graphics.Sprite;
 import model.Drawer;
 
 @SuppressWarnings("serial")
-public class Board extends JPanel {
+public class Board {
 	InputManager inputManager;
 	MouseManager mouseManager;
+
+    JPanel panel;
+    JFrame frame;
 
     Drawer drawer = new Drawer();
 	
@@ -30,57 +32,52 @@ public class Board extends JPanel {
 	List<Drawable> sprites = new ArrayList<>();
 	
 	public Board() {
-		this.setBackground(Color.BLACK);
-		this.setDoubleBuffered(true);
-		this.setFocusable(true);
+		this.panel = new JPanel() {
+            @Override
+            public void paint(Graphics g) {
+                super.paint(g);
+
+                Graphics2D g2d = (Graphics2D) g;
+                g2d.setColor(color);
+
+                drawer.render(g2d);
+
+                Toolkit.getDefaultToolkit().sync();
+                g.dispose();
+            }
+        };
+
+        this.panel.setBackground(Color.BLACK);
+		this.panel.setDoubleBuffered(true);
+		this.panel.setFocusable(true);
 		this.inputManager = new InputManager();
 		this.mouseManager = new MouseManager();
-		this.addKeyListener(this.inputManager);
-		this.addMouseListener(this.mouseManager);
-	}
+		this.panel.addKeyListener(this.inputManager);
+		this.panel.addMouseListener(this.mouseManager);
 
-    @Override
-	public void paint(Graphics g) {
-		super.paint(g);
-		
-		Graphics2D g2d = (Graphics2D) g;
-		g2d.setColor(color);
-		
-		this.drawer.render(g2d);
-		
-		Toolkit.getDefaultToolkit().sync();
-		g.dispose();
+        this.frame = new JFrame();
+        this.frame.setContentPane(this.panel);
+        this.frame.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
+        this.frame.setSize(800,600);
+        this.frame.setLocationRelativeTo(null);
+        this.frame.setTitle("FrankerZ");
+        this.frame.setResizable(false);
+        this.frame.setVisible(true);
 	}
 
     public void update() {
-        this.repaint();
+        this.panel.repaint();
 
         this.inputManager.update();
         this.mouseManager.update();
     }
-
-	/**
-	 * Waits for a given amount of milliseconds.
-	 * @param millis The amount of milliseconds to be waited
-	 */
-	public void sleep(long millis) {
-		if(millis > 0) {
-			long start = System.currentTimeMillis();
-			
-			while(System.currentTimeMillis() < start + millis)
-				Thread.yield();
-		}
-		else {
-			throw new IllegalArgumentException("Tried to wait for a negative or zero amount of milliseconds.");
-		}
-	}
 	
 	/**
 	 * Sets the background-color of this {@link Board}
 	 * @param color The new background-color
 	 */
 	public void setBackgroundColor(Color color) {
-		this.setBackground(color);
+		this.panel.setBackground(color);
 	}
 	
 	public Color getColor() {
@@ -319,7 +316,7 @@ public class Board extends JPanel {
 	 * @return The x-coordinate of the mouse pointer
 	 */
 	public int getMouseX() {
-		return getMousePosition().x;
+		return this.panel.getMousePosition().x;
 	}
 	
 	/**
@@ -327,6 +324,6 @@ public class Board extends JPanel {
 	 * @return The y-coordinate of the mouse pointer
 	 */
 	public int getMouseY() {
-		return getMousePosition().y;
+		return this.panel.getMousePosition().y;
 	}
 }

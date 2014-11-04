@@ -40,7 +40,7 @@ public class Game {
     }
 
     public Board getBoard() {
-        return this.getBoard(1);
+        return this.getBoard(0);
     }
 
     public void addActor(Actor aActor) {
