@@ -27,7 +27,7 @@ public class Main {
     private Game game;
 	
 	public Main() {
-        this.game = new Game(new Board());
+        this.game = new Game();
 	}
 	
 	public Board getBoard() {
