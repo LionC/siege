@@ -15,7 +15,7 @@ public class Game {
     protected List<Actor> actors = new LinkedList<>();
 
     public Game() {
-        //TODO: Construct and add default Board
+        this.boards.add(new Board());
     }
 
     public Game(Board aBoard) {
