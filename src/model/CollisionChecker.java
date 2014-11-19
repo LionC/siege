@@ -24,6 +24,12 @@ public class CollisionChecker {
         this.collidables.get(category).add(collidable);
     }
 
+    public void remove(Collidable collidable) {
+        for(List<Collidable> list : collidables.values() ) {
+            list.remove(collidable);
+        }
+    }
+
     /**
      * Registers a Pair of categories to be checked
      *
@@ -40,7 +46,7 @@ public class CollisionChecker {
      * @param aSecond Second category
      */
     public void addCategoryPair(String aFirst, String aSecond) {
-        this.addCategoryPair(new Pair<String, String>(aFirst, aSecond));
+        this.addCategoryPair(new Pair<>(aFirst, aSecond));
     }
 
     /**
@@ -63,14 +69,14 @@ public class CollisionChecker {
     }
 
     public void checkCollisions() {
-        String[] keys = (String[]) this.collidables.keySet().toArray();
-
         for(Pair<String, String> act : this.combinations) {
-            for(Collidable first : this.collidables.get(act.getFirst())) {
-                for(Collidable second : this.collidables.get(act.getSecond())) {
-                    if(first != second && first.getHitbox().collides(second.getHitbox())) {
-                        first.onCollision(second, act.getFirst());
-                        second.onCollision(first, act.getSecond());
+            if(this.collidables.containsKey(act.getFirst())) {
+                for (Collidable first : this.collidables.get(act.getFirst())) {
+                    for (Collidable second : this.collidables.get(act.getSecond())) {
+                        if (first != second && first.getHitbox().collides(second.getHitbox())) {
+                            first.onCollision(second, act.getFirst());
+                            second.onCollision(first, act.getSecond());
+                        }
                     }
                 }
             }

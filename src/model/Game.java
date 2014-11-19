@@ -13,6 +13,8 @@ public class Game {
 
     protected List<Board> boards = new ArrayList<>();
     protected List<Actor> actors = new LinkedList<>();
+    protected List<Actor> actorsToRemove = new LinkedList<>();
+    protected List<Actor> actorsToAdd = new LinkedList<>();
 
     protected CollisionChecker collider = new CollisionChecker();
 
@@ -37,7 +39,7 @@ public class Game {
         return this.boards;
     }
 
-    public CollisionChecker getCollisionChecket() {
+    public CollisionChecker getCollisionChecker() {
         return this.collider;
     }
 
@@ -50,11 +52,11 @@ public class Game {
     }
 
     public void addActor(Actor aActor) {
-        this.actors.add(aActor);
+        this.actorsToAdd.add(aActor);
     }
 
-    public boolean removeActor(Actor aActor) {
-        return this.actors.remove(aActor);
+    public void removeActor(Actor aActor) {
+        this.actorsToRemove.add(aActor);
     }
 
 
@@ -63,11 +65,26 @@ public class Game {
         this.frameLength = 1000 / aFps;
     }
 
+
+    /**
+     * updates tha internal acctor lists
+     */
+    protected void updateActorList() {
+        actors.removeAll(actorsToRemove);
+        actors.addAll(actorsToAdd);
+
+        actorsToAdd.clear();
+        actorsToRemove.clear();
+    }
+
     public void run() {
         long cur = System.currentTimeMillis();
         this.lastFrame = cur;
 
         for(;;) {
+            this.collider.checkCollisions();
+
+            this.updateActorList();
             for(Actor act : this.actors)
                 act.update();
 

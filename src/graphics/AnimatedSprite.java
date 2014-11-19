@@ -34,6 +34,9 @@ public class AnimatedSprite extends Sprite {
 		for(int i = 0; i < AnimatedSprite.gifDecoder.getFrameCount(); i++) {
 			frames[i] =  AnimatedSprite.gifDecoder.getFrame(i);
 		}
+
+        this.frameLoopStart = 0;
+        this.frameLoopEnd = frames.length - 1;
 	}
 	
 	/**

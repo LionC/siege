@@ -40,26 +40,7 @@ public class Sprite implements Drawable {
 	 * @throws Exception Could throw that the file is not found or that the default Board is not initialized
 	 */
 	public Sprite(String file, int x, int y) throws Exception {
-		if(defaultBoard == null) {
-			throw new Exception("No default Board set at the time \"" + file + "\" was created.");
-		}
-		
-		//TODO: Ist das die endgueltige Loesung?
-		try {
-			ImageIcon theImage = new ImageIcon(file);
-			//ImageIcon theImage = new ImageIcon(this.getClass().getResource(file));
-			this.image = theImage.getImage();
-		}
-		catch (NullPointerException npe) {
-			System.err.println("File \"" + file + "\" was not found.");
-		}
-		
-		this.x = x;
-		this.y = y;
-		this.visibility = defaultVisibility;
-		
-		if(this.visibility)
-			defaultBoard.add(this);
+        this(file,x,y,defaultBoard);
 	}
 	
 	/**
@@ -73,7 +54,7 @@ public class Sprite implements Drawable {
 	public Sprite(String file, int x, int y, Board myBoard) {
 		//TODO: Ist das die endgueltige Loesung?
 		try {
-			ImageIcon theImage = new ImageIcon(this.getClass().getResource(file));
+			ImageIcon theImage = new ImageIcon(file);
 			this.image = theImage.getImage();
 		}
 		catch (NullPointerException npe) {
@@ -82,7 +63,8 @@ public class Sprite implements Drawable {
 		
 		this.x = x;
 		this.y = y;
-		
+		this.visibility = defaultVisibility;
+
 		myBoard.add(this);
 	}
 
@@ -92,7 +74,7 @@ public class Sprite implements Drawable {
 	 * @param dy The amount of movement on the y-axis
 	 */
 	public void move(int dx, int dy) {
-		this.x += dx;
+        this.x += dx;
 		this.y += dy;
 	}
 	

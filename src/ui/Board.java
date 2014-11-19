@@ -115,7 +115,7 @@ public class Board {
             }
 		}
 
-        //TODO: Bug finden! manchmal wird keyreleas enicht ausgelöst so scheint es
+        //TODO: Bug finden! Manchmal sind Keys jeden 2. Frame down, da passiert irgendwas in update
 
         @Override
 		public void keyPressed(KeyEvent e) {
@@ -157,10 +157,21 @@ public class Board {
 
             //Reset released and pressed arrays
             for(int i = 0; i < MAX_KEY_INDEX; i++) {
+                keys[lastKeys][DOWN_INDEX + i] = keys[actKeys][DOWN_INDEX + i];
                 keys[lastKeys][PRESSED_INDEX + i] = false;
                 keys[lastKeys][RELEASED_INDEX + i] = false;
             }
 		}
+
+        public void printDownKeys() {
+            for(int i = 0; i < MAX_KEY_INDEX; i++) {
+                if(keys[actKeys][DOWN_INDEX + i]) {
+                    System.out.print(i + " ");
+                }
+            }
+
+            System.out.println();
+        }
 	}
 	
 	//Private class to handle Mouse inputs
@@ -222,6 +233,7 @@ public class Board {
 
             //Reset released and pressed arrays
             for(int i = 0; i < MAX_KEY_INDEX; i++) {
+                keys[lastKeys][DOWN_INDEX + i] = keys[actKeys][DOWN_INDEX + i];
                 keys[lastKeys][PRESSED_INDEX + i] = false;
                 keys[lastKeys][RELEASED_INDEX + i] = false;
             }
@@ -278,6 +290,7 @@ public class Board {
         return this.inputManager.keyReleased(keyId);
     }
 
+    public void printDownKeys() { this.inputManager.printDownKeys(); }
 
     /**
 	 * Returns whether a given mouse-key is down or not
