@@ -115,8 +115,6 @@ public class Board {
             }
 		}
 
-        //TODO: Bug finden! Manchmal sind Keys jeden 2. Frame down, da passiert irgendwas in update
-
         @Override
 		public void keyPressed(KeyEvent e) {
             //Check if the key is down to prevent repeat presses from the OS
