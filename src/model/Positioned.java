@@ -1,15 +1,15 @@
 package model;
 
 public interface Positioned {
-    int getX();
-    int getY();
-    default void setPosition(int aX, int aY) {
+    float getX();
+    float getY();
+    default void setPosition(float aX, float aY) {
         this.setX(aX);
         this.setY(aY);
     }
-    void setX(int aX);
-    void setY(int aY);
-    default void move(int dx, int dy) {
+    void setX(float aX);
+    void setY(float aY);
+    default void move(float dx, float dy) {
         this.setPosition(this.getX() + dx, this.getY() + dy);
     }
 }

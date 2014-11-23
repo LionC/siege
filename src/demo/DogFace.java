@@ -3,16 +3,13 @@ package demo;
 import com.sun.javafx.geom.Vec2d;
 import graphics.Drawable;
 import graphics.Sprite;
-import model.Actor;
-import model.Collidable;
-import model.Game;
-import model.Hitbox;
+import model.*;
 import ui.Board;
 
 import java.awt.*;
 import java.awt.event.KeyEvent;
 
-public class DogFace implements Actor, Collidable, Drawable {
+public class DogFace implements Actor, Collidable, Drawable, Positioned {
     Board input;
     Sprite sprite;
     Hitbox hitbox;
@@ -41,14 +38,38 @@ public class DogFace implements Actor, Collidable, Drawable {
         this.direction = (int)(Math.random() * 4) + 1;
     }
 
-    public void move(int dx, int dy) {
+    @Override
+    public void move(float dx, float dy) {
         this.sprite.move(dx,dy);
         this.hitbox.move(dx,dy);
     }
 
-    public void setPosition(int x, int y) {
+    @Override
+    public float getX() {
+        return this.sprite.getX();
+    }
+
+    @Override
+    public float getY() {
+        return this.sprite.getY();
+    }
+
+    @Override
+    public void setPosition(float x, float y) {
         this.sprite.setPosition(x,y);
         this.hitbox.setPosition(x,y);
+    }
+
+    @Override
+    public void setX(float aX) {
+        this.hitbox.setX(aX);
+        this.sprite.setX(aX);
+    }
+
+    @Override
+    public void setY(float aY) {
+        this.hitbox.setY(aY);
+        this.hitbox.setY(aY);
     }
 
     @Override
@@ -59,8 +80,8 @@ public class DogFace implements Actor, Collidable, Drawable {
         if(frame == 30)
             this.direction = (int)(Math.random() * 4) + 1;
 
-        int x = this.sprite.getX();
-        int y = this.sprite.getY();
+        float x = this.sprite.getX();
+        float y = this.sprite.getY();
 
 
         if(x < -49) {
@@ -107,7 +128,7 @@ public class DogFace implements Actor, Collidable, Drawable {
         if(partnerCategory.equals("Dogs")) {
             collisions++;
             for(int i = 0; i < Math.random() * 10; i++) {
-                DogCollisionParticle particle = new DogCollisionParticle(this.game, this.sprite.getX(), this.sprite.getY());
+                DogCollisionParticle particle = new DogCollisionParticle(this.game, (int)this.sprite.getX(), (int)this.sprite.getY());
                 game.addActor(particle);
                 game.getBoard().add(particle);
                 game.getCollisionChecker().add(particle, "Particle");

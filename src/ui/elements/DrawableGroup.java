@@ -6,9 +6,6 @@ import java.awt.*;
 import java.util.LinkedList;
 import java.util.List;
 
-/**
- * Created by LionC on 17.07.2014.
- */
 public class DrawableGroup implements Drawable {
     List<Drawable> drawables = new LinkedList<>();
 

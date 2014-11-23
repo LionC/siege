@@ -1,5 +1,6 @@
 package model;
 import java.awt.Rectangle;
+import java.awt.geom.Rectangle2D;
 
 /**
  * Represents a Hitbox of any kind, implementing basic collision and moving
@@ -7,7 +8,7 @@ import java.awt.Rectangle;
  *
  */
 public class Hitbox implements Positioned {
-	private Rectangle theBox;
+	private Rectangle2D.Float theBox = new Rectangle2D.Float();
 
     //TODO: remove rectangle, replace with easy primtivies
 
@@ -18,55 +19,42 @@ public class Hitbox implements Positioned {
 	 * @param width Width
 	 * @param height Height
 	 */
-	public Hitbox (int x, int y, int width, int height) {
-		this(new Rectangle(x,y,width,height));
+	public Hitbox (float x, float y, float width, float height) {
+		this(new Rectangle2D.Float(x, y, width, height));
 	}
 
-    /**
-     * Creates a new Hitbox
-     * @param aBox The Hitbox bounds
-     */
-    public Hitbox (Rectangle aBox) {
-        this.theBox = new Rectangle(aBox);
+    public Hitbox(Rectangle2D aRect) {
+        this.theBox.setRect(aRect);
     }
 
-    public int getHeight() {
-        return (int)this.theBox.getHeight();
+    public float getHeight() {
+        return (float) this.theBox.getHeight();
     }
 
-    public int getWidth() {
-        return (int)this.theBox.getWidth();
+    public float getWidth() {
+        return (float) this.theBox.getWidth();
     }
 
-    public void setHeight(int aHeight) {
-        this.theBox.setBounds((int)this.theBox.getX(), (int)this.theBox.getY(), (int)this.theBox.getWidth(), aHeight);
+    public void setHeight(float aHeight) {
+        this.theBox.setRect(this.theBox.getX(), this.theBox.getY(), this.theBox.getWidth(), aHeight);
     }
 
     public void setWidth(int aWidth) {
-        this.theBox.setBounds((int)this.theBox.getX(), (int)this.theBox.getY(), aWidth, (int)this.theBox.getHeight());
+        this.theBox.setRect(this.theBox.getX(), this.theBox.getY(), aWidth, this.theBox.getHeight());
     }
 
 	public boolean collides(Hitbox otherBox) {
 		return this.theBox.intersects(otherBox.theBox);
 	}
-	
-	/**
-	 * Moves this Hitbox
-	 * @param dx The amountof movement on the x-axis
-	 * @param dy The amount of movement on the y-axis
-	 */
-	public void move(int dx, int dy) {
-		this.theBox.setLocation((int)this.theBox.getX() + dx, (int)this.theBox.getY() + dy);
-	}
 
     @Override
-    public int getX() {
-        return (int)this.theBox.getX();
+    public float getX() {
+        return (float) this.theBox.getX();
     }
 
     @Override
-    public int getY() {
-        return (int)this.theBox.getY();
+    public float getY() {
+        return (float) this.theBox.getY();
     }
 
     /**
@@ -75,17 +63,17 @@ public class Hitbox implements Positioned {
 	 * @param y The new y Position
 	 */
     @Override
-	public void setPosition(int x, int y) {
-		this.theBox.setLocation(x, y);
+	public void setPosition(float x, float y) {
+		this.theBox.setRect(x, y, this.theBox.getWidth(), this.theBox.getHeight());
 	}
 
     @Override
-    public void setX(int aX) {
-        this.theBox.setLocation(aX, (int)this.theBox.getY());
+    public void setX(float aX) {
+        this.setPosition(aX, this.getY());
     }
 
     @Override
-    public void setY(int aY) {
-        this.theBox.setLocation((int)this.theBox.getX(), aY);
+    public void setY(float aY) {
+        this.setPosition(this.getX(), aY);
     }
 }

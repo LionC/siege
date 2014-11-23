@@ -5,13 +5,14 @@ import java.awt.Graphics2D;
 import java.awt.Color;
 
 import graphics.Drawable;
+import model.PositionedDrawable;
 
 /**
  * 
  * @author LionC
  */
-public class Box implements Drawable {
-	protected int x, y, height, width;
+public class Box implements PositionedDrawable {
+	protected float x, y, height, width;
 	protected int border = 1;
 	protected boolean filled = false;
 	protected Color color = Color.WHITE;
@@ -36,28 +37,28 @@ public class Box implements Drawable {
 		g.setColor(this.color);
 		
 		if(filled) {
-			g.fillRect(this.x, this.y, this.width, this.height);
+			g.fillRect((int)this.x, (int)this.y, (int)this.width, (int)this.height);
 		}
 		else {
 			for(int i = 0; i < border; i++) {
-				g.drawRect(this.x + i, this.y + i, this.width - 2*i, this.height - 2*i);
+				g.drawRect((int)this.x + i, (int)this.y + i, (int)this.width - 2*i, (int)this.height - 2*i);
 			}
 		}
 		
 		g.setColor(old);
 	}
 
-	public int getX() {
+	public float getX() {
 		return this.x;
 	}
 
-	public int getY() {
+	public float getY() {
 		return this.y;
 	}
 
-    public int getHeight() { return  this.height; }
+    public float getHeight() { return  this.height; }
 
-    public int getWidth() { return  this.width; }
+    public float getWidth() { return  this.width; }
 	
 	public Color getColor() {
 		return this.color;
@@ -67,12 +68,22 @@ public class Box implements Drawable {
 		this.color = aColor;
 	}
 
-	public void setPosition(int aX, int aY) {
+	public void setPosition(float aX, float aY) {
 		this.x = aX;
 		this.y = aY;
 	}
-	
-	public void move(int dX, int dY) {
+
+    @Override
+    public void setX(float aX) {
+        this.x = aX;
+    }
+
+    @Override
+    public void setY(float aY) {
+        this.y = aY;
+    }
+
+    public void move(float dX, float dY) {
 		this.x += dX;
 		this.y += dY;
 	}

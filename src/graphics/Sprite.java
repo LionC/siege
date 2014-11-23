@@ -5,9 +5,10 @@ import java.awt.Image;
 
 import javax.swing.ImageIcon;
 
+import model.PositionedDrawable;
 import ui.Board;
 
-public class Sprite implements Drawable {
+public class Sprite implements PositionedDrawable {
 	static private Board defaultBoard;
 	static private boolean defaultVisibility = true;
 	
@@ -29,8 +30,8 @@ public class Sprite implements Drawable {
 	
 	protected Image image;
 	private boolean visibility;
-	private int x;
-	private int y;
+	private float x;
+	private float y;
 	
 	/**
 	 * Standard constructor using the default Board
@@ -73,26 +74,40 @@ public class Sprite implements Drawable {
 	 * @param dx The amountof movement on the x-axis
 	 * @param dy The amount of movement on the y-axis
 	 */
-	public void move(int dx, int dy) {
+    @Override
+	public void move(float dx, float dy) {
         this.x += dx;
 		this.y += dy;
 	}
-	
+
 	/**
 	 * Sets this Sprites position
 	 * @param x The new x-position
 	 * @param y The new y-position
 	 */
-	public void setPosition(int x, int y) {
+    @Override
+	public void setPosition(float x, float y) {
 		this.x = x;
 		this.y = y;
 	}
-	
-	public int getX() {
+
+    @Override
+    public void setX(float aX) {
+        this.x = aX;
+    }
+
+    @Override
+    public void setY(float aY) {
+        this.y = aY;
+    }
+
+    @Override
+	public float getX() {
 		return x;
 	}
-	
-	public int getY() {
+
+    @Override
+	public float getY() {
 		return y;
 	}
 	
@@ -128,6 +143,6 @@ public class Sprite implements Drawable {
 	@Override
 	public void draw(Graphics2D g) {
 		if(this.visibility)
-            g.drawImage(this.image, this.x, this.y, null);
+            g.drawImage(this.image, (int)this.x, (int)this.y, null);
 	}
 }

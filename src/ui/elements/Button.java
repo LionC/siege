@@ -37,7 +37,7 @@ public class Button extends Box implements Actor {
     }
 
     protected void centerLabel(Graphics2D g) {
-        int posX = 0, posY = 0;
+        float posX = 0, posY = 0;
 
         int textHeight = g.getFontMetrics().getAscent();
         posY = this.getY() + (textHeight + this.getHeight()) / 2;
