@@ -26,7 +26,7 @@ public class DogFace implements Actor, Collidable, Drawable, Positioned {
         this.game = game;
         input = board;
         try {
-            sprite = new Sprite("src/demo/img/frankerz.png",200,200, board);
+            sprite = new Sprite("src/demo/img/frankerz.png",200,200);
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -131,7 +131,6 @@ public class DogFace implements Actor, Collidable, Drawable, Positioned {
                 DogCollisionParticle particle = new DogCollisionParticle(this.game, (int)this.sprite.getX(), (int)this.sprite.getY());
                 game.addActor(particle);
                 game.getBoard().add(particle);
-                game.getCollisionChecker().add(particle, "Particle");
             }
         }
     }
@@ -139,5 +138,6 @@ public class DogFace implements Actor, Collidable, Drawable, Positioned {
     @Override
     public void draw(Graphics2D g) {
         g.drawString("" + collisions, this.sprite.getX(), this.sprite.getY());
+        this.sprite.draw(g);
     }
 }

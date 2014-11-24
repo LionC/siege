@@ -68,6 +68,15 @@ public class Game {
         this.actors.clear();
     }
 
+    public void clear() {
+        for(Board act : this.boards) {
+            act.clear();
+        }
+
+        this.getCollisionChecker().clear();
+        this.clearActors();
+    }
+
     public void setFps(int aFps) {
         this.fps = aFps;
         this.frameLength = 1000 / aFps;

@@ -9,16 +9,7 @@ import model.PositionedDrawable;
 import ui.Board;
 
 public class Sprite implements PositionedDrawable {
-	static private Board defaultBoard;
 	static private boolean defaultVisibility = true;
-	
-	/**
-	 * Sets the default Board that is used by all Sprites per default
-	 * @param board The default board
-	 */
-	static public void setDefaultBoard(Board board) {
-		defaultBoard = board;
-	}
 	
 	/**
 	 * Sets the default visibility for all Sprites
@@ -32,27 +23,15 @@ public class Sprite implements PositionedDrawable {
 	private boolean visibility;
 	private float x;
 	private float y;
-	
-	/**
-	 * Standard constructor using the default Board
-	 * @param file Resource file path to the image
-	 * @param x X Position
-	 * @param y Y Position
-	 * @throws Exception Could throw that the file is not found or that the default Board is not initialized
-	 */
-	public Sprite(String file, int x, int y) throws Exception {
-        this(file,x,y,defaultBoard);
-	}
-	
+
 	/**
 	 * Constructor not using the default Board
 	 * @param file Resource file path to the image
 	 * @param x X Position
 	 * @param y Y Position
-	 * @param myBoard The Board this Sprite should be rendered on
-	 * @throws Exception Could throw that the file is not found or that the default Board is not initialized
+	 * @throws Exception Could throw that the file is not found
 	 */
-	public Sprite(String file, int x, int y, Board myBoard) {
+	public Sprite(String file, int x, int y) {
 		//TODO: Ist das die endgueltige Loesung?
 		try {
 			ImageIcon theImage = new ImageIcon(file);
@@ -65,8 +44,6 @@ public class Sprite implements PositionedDrawable {
 		this.x = x;
 		this.y = y;
 		this.visibility = defaultVisibility;
-
-		myBoard.add(this);
 	}
 
 	/**

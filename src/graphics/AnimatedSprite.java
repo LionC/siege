@@ -40,7 +40,7 @@ public class AnimatedSprite extends Sprite {
 	}
 	
 	/**
-	 * Construcot using the default Board
+	 * Construct a new AnimatedSprite
 	 * @param file The path to the .gif File containing the frame data
 	 * @param x X-Position
 	 * @param y Y-Position
@@ -52,21 +52,7 @@ public class AnimatedSprite extends Sprite {
 		initializeData(file);
 		this.setFrame(0);
 	}
-	
-	/**
-	 * Construcot not using the default Board
-	 * @param file The path to the .gif File containing the frame data
-	 * @param x X-Position
-	 * @param y Y-Position
-	 * @param board The Board this Sprite should be drawn on
-	 * @throws Exception
-	 */
-	public AnimatedSprite(String file, int x, int y, Board board) throws Exception {
-		super(file, x, y, board);
-		initializeData(file);
-		this.setFrame(0);
-	}
-	
+
 	/**
 	 * Sets a new frame that this AnimatedSprite should be representing
 	 * @param frame The frame index

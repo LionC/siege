@@ -12,7 +12,7 @@ import java.util.Random;
 /**
  * Created by LionC on 07.11.2014.
  */
-public class DogCollisionParticle implements Actor, Drawable, Collidable {
+public class DogCollisionParticle implements Actor, Drawable {
 
 
     int x, y;
@@ -43,7 +43,6 @@ public class DogCollisionParticle implements Actor, Drawable, Collidable {
         if(ttl < 0) {
             game.removeActor(this);
             game.getBoard().remove(this);
-            game.getCollisionChecker().remove(this);
         }
 
 
@@ -64,7 +63,6 @@ public class DogCollisionParticle implements Actor, Drawable, Collidable {
                 DogCollisionParticle particle = new DogCollisionParticle(this.game, x, y);
                 game.addActor(particle);
                 game.getBoard().add(particle);
-                game.getCollisionChecker().add(particle, "Particle");
             }
         }
 
@@ -79,17 +77,4 @@ public class DogCollisionParticle implements Actor, Drawable, Collidable {
         g.drawOval(x,y, 1 + (int) size, 1 + (int) size);
     }
 
-    @Override
-    public Hitbox getHitbox() {
-        return new Hitbox(x,y,(int) size,(int)size);
-    }
-
-    @Override
-    public void onCollision(Collidable partner, String partnerCategory) {
-        if(partnerCategory.equals("Particle")) {
-            if(Math.random() < 0.0) {
-                create = true;
-            }
-        }
-    }
 }

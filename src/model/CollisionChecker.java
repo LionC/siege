@@ -30,6 +30,10 @@ public class CollisionChecker {
         }
     }
 
+    public void clear() {
+        this.collidables.clear();
+    }
+
     /**
      * Registers a Pair of categories to be checked
      *

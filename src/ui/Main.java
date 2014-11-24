@@ -3,6 +3,8 @@ import java.awt.event.KeyEvent;
 import java.awt.event.MouseEvent;
 import java.io.File;
 import java.io.IOException;
+import java.util.ArrayList;
+import java.util.List;
 
 import demo.ClickParticler;
 import demo.DogFace;
@@ -51,14 +53,14 @@ public class Main {
         Game game = new Game();
 
         try {
-            game.getBoard().add(new AnimatedSprite("src/demo/img/particle.gif",20,20,game.getBoard()));
+            game.getBoard().add(new AnimatedSprite("src/demo/img/particle.gif",20,20));
         } catch (Exception e) {
             e.printStackTrace();
         }
 
+        List<DogFace> dogs = new ArrayList<>();
 
-        for(int i = 0; i < 5; i++) {
-
+        for(int i = 0; i < 20; i++) {
             DogFace franker = new DogFace(game.getBoard(), game);
 
             franker.setMovX(Math.random() * 20 - 10);
@@ -67,6 +69,8 @@ public class Main {
             game.addActor(franker);
             game.getBoard().add(franker);
             game.getCollisionChecker().add(franker, "Dogs");
+
+            dogs.add(franker);
         }
 
         game.getBoard().add(new FrameCounter(600, 45));
@@ -76,17 +80,32 @@ public class Main {
         game.getCollisionChecker().addCategoryPair("Dogs","Dogs");
         game.getCollisionChecker().addCategoryPair("Particle","Particle");
 
-        Button but = new Button(200,20,50,35,"Test", game.getBoard());
+        Button but = new Button(200,20,70,35,"Add Dog", game.getBoard());
         but.setAction( () -> {
-            if(but.getText().equals("Test")) {
-                but.setText("!");
-            }
-            else {
-                but.setText("Test");
-            }
+            DogFace franker = new DogFace(game.getBoard(), game);
+
+            franker.setMovX(Math.random() * 20 - 10);
+            franker.setMovY(Math.random() * 20 - 10);
+            franker.setPosition((int) (Math.random() * 800), (int) (Math.random() * 600));
+            game.addActor(franker);
+            game.getBoard().add(franker);
+            game.getCollisionChecker().add(franker, "Dogs");
+
+            dogs.add(franker);
         } );
         game.addActor(but);
         game.getBoard().add(but);
+
+        Button but2 = new Button(200,55,70,35,"Clear Dogs", game.getBoard());
+        but2.setAction( () -> {
+            for(DogFace act : dogs) {
+                game.removeActor(act);
+                game.getBoard().remove(act);
+                game.getCollisionChecker().remove(act);
+            }
+        } );
+        game.addActor(but2);
+        game.getBoard().add(but2);
 
         game.run();
 	}
