@@ -1,6 +1,7 @@
 package model;
 
 import ui.Board;
+import utility.Average;
 
 import java.util.ArrayList;
 import java.util.LinkedList;
@@ -34,6 +35,10 @@ public class Game {
         return this.boards.remove(aBoard);
     }
 
+    public void clearBoards() {
+        this.boards.clear();
+    }
+
     public List<Board> getBoards() {
         //TODO: This is kinda mutable, someGame.getBoards().remove(someBoard) - is this ok?
         return this.boards;
@@ -59,6 +64,9 @@ public class Game {
         this.actorsToRemove.add(aActor);
     }
 
+    public void clearActors() {
+        this.actors.clear();
+    }
 
     public void setFps(int aFps) {
         this.fps = aFps;
@@ -80,6 +88,8 @@ public class Game {
     public void run() {
         long cur = System.currentTimeMillis();
         this.lastFrame = cur;
+
+        Average avg = new Average();
 
         for(;;) {
             this.collider.checkCollisions();

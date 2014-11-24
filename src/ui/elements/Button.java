@@ -9,14 +9,19 @@ import java.util.Optional;
 public class Button extends Box implements Actor {
     Label label;
     Runnable action = null;
-    Board board = null;
+    Board board;
 
     boolean labelNeedsToBeCentered = true;
 
-    public Button(int aX, int aY, int aWidth, int aHeight, String aLabel) {
+    public Button(int aX, int aY, int aWidth, int aHeight, String aLabel, Board aBoard) {
         super(aX, aY, aWidth, aHeight);
 
         this.label = new Label(aLabel);
+        this.board = aBoard;
+    }
+
+    public Button(int aX, int aY, int aWidth, int aHeight, String aLabel) {
+        this(aX,aY,aWidth,aHeight,aLabel,null);
     }
 
     protected boolean wasClicked() {
@@ -52,12 +57,20 @@ public class Button extends Box implements Actor {
         this.action = aAction;
     }
 
+    public void setText(String newText) {
+        this.label.setText(newText);
+        this.labelNeedsToBeCentered = true;
+    }
+
     public void setBoard(Board aBoard) {
         this.board = aBoard;
     }
 
     @Override
     public void draw(Graphics2D g) {
+        if(this.labelNeedsToBeCentered)
+            this.centerLabel(g);
+
         super.draw(g);
         this.label.draw(g);
     }

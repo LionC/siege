@@ -28,6 +28,13 @@ public class Drawer {
     }
 
     /**
+     * Removes all Drawables from this Drawers
+     */
+    public void clear() {
+        this.drawables.clear();
+    }
+
+    /**
      * Renders all managed Drawables on the given Graphics-Context
      * @param g Graphics Context to render on
      */

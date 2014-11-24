@@ -1,8 +1,5 @@
 package ui;
-import java.awt.Color;
-import java.awt.Graphics;
-import java.awt.Graphics2D;
-import java.awt.Toolkit;
+import java.awt.*;
 import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
 import java.awt.event.MouseAdapter;
@@ -254,6 +251,13 @@ public class Board {
 		this.drawer.remove(drawable);
 	}
 
+    /**
+     * Remove all Drawables from this Board
+     */
+    public void clear() {
+        this.drawer.clear();
+    }
+
 	/**
 	 * Returns whether a given key is down or not
 	 * @param keyId The Id of the key, for a reference of the Ids look for the class KeyEvent
@@ -324,17 +328,27 @@ public class Board {
 
     /**
 	 * Gets the x-coordinate of the mouse (relative to the window)
-	 * @return The x-coordinate of the mouse pointer
+	 * @return The x-coordinate of the mouse pointer, -1 if the mouse pointer is out of the window
 	 */
 	public int getMouseX() {
-		return this.panel.getMousePosition().x;
+		Point pos = this.panel.getMousePosition();
+
+        if(pos != null)
+            return pos.x;
+        else
+            return -1;
 	}
 	
 	/**
 	 * Gets the y-coordinate of the mouse (relative to the window)
-	 * @return The y-coordinate of the mouse pointer
+	 * @return The y-coordinate of the mouse pointer, -1 if the mouse pointer is out of the window
 	 */
 	public int getMouseY() {
-		return this.panel.getMousePosition().y;
+        Point pos = this.panel.getMousePosition();
+
+        if(pos != null)
+            return pos.y;
+        else
+            return -1;
 	}
 }
