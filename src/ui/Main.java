@@ -77,7 +77,14 @@ public class Main {
         game.getCollisionChecker().addCategoryPair("Particle","Particle");
 
         Button but = new Button(200,20,50,35,"Test", game.getBoard());
-        but.setAction( () -> System.out.println("Lalala") );
+        but.setAction( () -> {
+            if(but.getText().equals("Test")) {
+                but.setText("!");
+            }
+            else {
+                but.setText("Test");
+            }
+        } );
         game.addActor(but);
         game.getBoard().add(but);
 

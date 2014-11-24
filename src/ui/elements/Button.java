@@ -45,10 +45,10 @@ public class Button extends Box implements Actor {
         float posX = 0, posY = 0;
 
         int textHeight = g.getFontMetrics().getAscent();
-        posY = this.getY() + (textHeight + this.getHeight()) / 2;
+        posY = this.getY() + (this.getHeight() - textHeight) / 2;
 
         int textWidth = g.getFontMetrics().stringWidth(this.label.getText());
-        posX = this.getX() + (textWidth + this.getWidth()) / 2;
+        posX = this.getX() + (this.getWidth() - textWidth) / 2;
 
         this.label.setPosition(posX, posY);
     }
@@ -60,6 +60,10 @@ public class Button extends Box implements Actor {
     public void setText(String newText) {
         this.label.setText(newText);
         this.labelNeedsToBeCentered = true;
+    }
+
+    public String getText() {
+        return this.label.getText();
     }
 
     public void setBoard(Board aBoard) {
