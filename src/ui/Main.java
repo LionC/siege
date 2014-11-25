@@ -16,6 +16,7 @@ import javax.sound.sampled.*;
 import javax.swing.*;
 
 import model.Game;
+import model.PositionedDrawableGroup;
 import sound.Sound;
 import ui.elements.Box;
 import ui.elements.Button;
@@ -73,14 +74,14 @@ public class Main {
             dogs.add(franker);
         }
 
-        game.getBoard().add(new FrameCounter(600, 45));
+        game.getBoard().add(new FrameCounter(85, 22, game));
 
         game.addActor(new ClickParticler(game));
 
         game.getCollisionChecker().addCategoryPair("Dogs","Dogs");
         game.getCollisionChecker().addCategoryPair("Particle","Particle");
 
-        Button but = new Button(200,20,70,35,"Add Dog", game.getBoard());
+        Button but = new Button(10,10,70,35,"Add Dog", game.getBoard());
         but.setAction( () -> {
             DogFace franker = new DogFace(game.getBoard(), game);
 
@@ -96,7 +97,7 @@ public class Main {
         game.addActor(but);
         game.getBoard().add(but);
 
-        Button but2 = new Button(200,55,70,35,"Clear Dogs", game.getBoard());
+        Button but2 = new Button(10,45,70,35,"Clear Dogs", game.getBoard());
         but2.setAction( () -> {
             for(DogFace act : dogs) {
                 game.removeActor(act);
@@ -106,6 +107,38 @@ public class Main {
         } );
         game.addActor(but2);
         game.getBoard().add(but2);
+
+        Label fpsLabel = new Label("Performance FPS: ",85,10);
+        game.getBoard().add(fpsLabel);
+        game.setPerformanceCallback(a -> {
+            fpsLabel.setText("Performance FPS: " + a);
+        });
+
+        PositionedDrawableGroup fpsPanel = new PositionedDrawableGroup(300,300);
+        Button increaseFps = new Button(300,300,20,20,"+",game.getBoard());
+        game.addActor(increaseFps);
+
+        Button decreaseFps = new Button(300,340,20,20,"-",game.getBoard());
+        game.addActor(decreaseFps);
+
+        Label currentFps = new Label(String.valueOf(game.getFps()),303,323);
+
+        increaseFps.setAction(() -> {
+            game.setFps(game.getFps() + 1);
+            currentFps.setText(String.valueOf(game.getFps()));
+        });
+        decreaseFps.setAction(() -> {
+            game.setFps(game.getFps() - 1);
+            currentFps.setText(String.valueOf(game.getFps()));
+        });
+
+        fpsPanel.add(increaseFps);
+        fpsPanel.add(decreaseFps);
+        fpsPanel.add(currentFps);
+
+        game.getBoard().add(fpsPanel);
+        fpsPanel.setPosition(90,45);
+
 
         game.run();
 	}

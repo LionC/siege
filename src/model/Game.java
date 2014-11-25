@@ -6,11 +6,14 @@ import utility.Average;
 import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.List;
+import java.util.function.Consumer;
 
 public class Game {
-    protected int fps = 30;
+    protected int fps = 60;
     protected int frameLength = 1000 / fps;
     protected long lastFrame;
+
+    protected Consumer<Integer> performanceCallback = null;
 
     protected List<Board> boards = new ArrayList<>();
     protected List<Actor> actors = new LinkedList<>();
@@ -77,11 +80,18 @@ public class Game {
         this.clearActors();
     }
 
+    public int getFps() {
+        return this.fps;
+    }
+
     public void setFps(int aFps) {
         this.fps = aFps;
         this.frameLength = 1000 / aFps;
     }
 
+    public void setPerformanceCallback(Consumer<Integer> aCallback) {
+        this.performanceCallback = aCallback;
+    }
 
     /**
      * updates tha internal acctor lists
@@ -95,12 +105,21 @@ public class Game {
     }
 
     public void run() {
-        long cur = System.currentTimeMillis();
-        this.lastFrame = cur;
+        int wait = 0;
+        this.lastFrame = System.currentTimeMillis();
 
         Average avg = new Average();
 
         for(;;) {
+            this.lastFrame = System.currentTimeMillis();
+
+            if((avg.getCount() % this.fps) == 0) {
+                if(this.performanceCallback != null) {
+                    this.performanceCallback.accept((int) avg.get());
+                }
+                avg.reset();
+            }
+
             this.collider.checkCollisions();
 
             this.updateActorList();
@@ -110,9 +129,9 @@ public class Game {
             for(Board act : this.boards)
                 act.update();
 
-            cur = System.currentTimeMillis();
-            this.lastFrame = cur;
-            this.busyWait(this.frameLength - (int)(cur - this.lastFrame));
+            wait = this.frameLength - (int)(System.currentTimeMillis() - this.lastFrame);
+            avg.add(1000 / (this.frameLength - wait + 1));
+            this.busyWait(wait);
         }
     }
 
